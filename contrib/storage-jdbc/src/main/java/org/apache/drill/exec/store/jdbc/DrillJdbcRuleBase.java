@@ -22,13 +22,12 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.calcite.adapter.jdbc.JdbcConvention;
 import org.apache.calcite.adapter.jdbc.JdbcRules;
-import org.apache.calcite.plan.Convention;
-import org.apache.calcite.plan.RelOptRuleCall;
-import org.apache.calcite.plan.RelTrait;
+import org.apache.calcite.plan.*;
 import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.rel.convert.ConverterRule;
 import org.apache.calcite.rel.logical.LogicalFilter;
 import org.apache.calcite.rel.logical.LogicalProject;
+import org.apache.calcite.rel.metadata.RelMetadataQuery;
 import org.apache.calcite.rex.RexNode;
 
 import com.google.common.cache.CacheBuilder;
@@ -64,7 +63,12 @@ abstract class DrillJdbcRuleBase extends ConverterRule {
       LogicalProject project = (LogicalProject) rel;
       return new JdbcRules.JdbcProject(rel.getCluster(), rel.getTraitSet().replace(this.out), convert(
           project.getInput(), project.getInput().getTraitSet().replace(this.out)), project.getProjects(),
-          project.getRowType());
+          project.getRowType()) {
+        @Override
+        public RelOptCost computeSelfCost(RelOptPlanner planner, RelMetadataQuery mq) {
+          return planner.getCostFactory().makeCost(0.0, 0.0, 0.0);
+        }
+      };
     }
 
     @Override

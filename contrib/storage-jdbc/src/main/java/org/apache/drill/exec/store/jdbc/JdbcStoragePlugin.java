@@ -35,6 +35,7 @@ import org.apache.calcite.adapter.jdbc.JdbcSchema;
 import org.apache.calcite.linq4j.tree.ConstantUntypedNull;
 import org.apache.calcite.plan.RelOptPlanner;
 import org.apache.calcite.plan.RelOptRule;
+import org.apache.calcite.plan.RelOptRuleCall;
 import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.rel.convert.ConverterRule;
 import org.apache.calcite.rel.rules.FilterSetOpTransposeRule;
@@ -52,6 +53,7 @@ import org.apache.drill.common.JSONOptions;
 import org.apache.drill.common.expression.SchemaPath;
 import org.apache.drill.exec.ops.OptimizerRulesContext;
 import org.apache.drill.exec.physical.base.AbstractGroupScan;
+import org.apache.drill.exec.planner.PlannerPhase;
 import org.apache.drill.exec.planner.logical.DrillRel;
 import org.apache.drill.exec.planner.physical.Prel;
 import org.apache.drill.exec.server.DrillbitContext;
@@ -463,6 +465,11 @@ public class JdbcStoragePlugin extends AbstractStoragePlugin {
   public AbstractGroupScan getPhysicalScan(String userName, JSONOptions selection, List<SchemaPath> columns)
       throws IOException {
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Set<RelOptRule> getLogicalOptimizerRules(OptimizerRulesContext context) {
+    return convention.getRules();
   }
 
   @Override
