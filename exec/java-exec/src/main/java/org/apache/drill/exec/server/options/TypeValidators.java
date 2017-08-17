@@ -134,11 +134,11 @@ public class TypeValidators {
 
   public static class BooleanValidator extends TypeValidator {
     public BooleanValidator(String name, boolean def) {
-      this(name, def, false);
+      this(name, def, OptionValue.MetaData.DEFAULT);
     }
 
-    public BooleanValidator(String name, boolean def, boolean isAdminOption) {
-      super(name, Kind.BOOLEAN, OptionValue.createBoolean(OptionType.SYSTEM, name, def), isAdminOption);
+    public BooleanValidator(String name, boolean def, OptionValue.MetaData metaData) {
+      super(name, Kind.BOOLEAN, OptionValue.createBoolean(OptionType.SYSTEM, name, def), metaData);
     }
 
     public OptionValue loadConfigDefault(DrillConfig bootConfig, String name, String configPath){
@@ -148,11 +148,11 @@ public class TypeValidators {
 
   public static class StringValidator extends TypeValidator {
     public StringValidator(String name, String def) {
-      this(name, def, false);
+      this(name, def, OptionValue.MetaData.DEFAULT);
     }
 
-    public StringValidator(String name, String def, boolean isAdminOption) {
-      super(name, Kind.STRING, OptionValue.createString(OptionType.SYSTEM, name, def), isAdminOption);
+    public StringValidator(String name, String def, OptionValue.MetaData metaData) {
+      super(name, Kind.STRING, OptionValue.createString(OptionType.SYSTEM, name, def), metaData);
     }
 
     public OptionValue loadConfigDefault(DrillConfig bootConfig, String name, String configPath){
@@ -162,11 +162,11 @@ public class TypeValidators {
 
   public static class LongValidator extends TypeValidator {
     public LongValidator(String name, long def) {
-      this(name, def, false);
+      this(name, def, OptionValue.MetaData.DEFAULT);
     }
 
-    public LongValidator(String name, long def, boolean isAdminOption) {
-      super(name, Kind.LONG, OptionValue.createLong(OptionType.SYSTEM, name, def), isAdminOption);
+    public LongValidator(String name, long def, OptionValue.MetaData metaData) {
+      super(name, Kind.LONG, OptionValue.createLong(OptionType.SYSTEM, name, def), metaData);
     }
 
     public OptionValue loadConfigDefault(DrillConfig bootConfig, String name, String configPath){
@@ -176,11 +176,11 @@ public class TypeValidators {
 
   public static class DoubleValidator extends TypeValidator {
     public DoubleValidator(String name, double def) {
-      this(name, def, false);
+      this(name, def, OptionValue.MetaData.DEFAULT);
     }
 
-    public DoubleValidator(String name, double def, boolean isAdminOption) {
-      super(name, Kind.DOUBLE, OptionValue.createDouble(OptionType.SYSTEM, name, def), isAdminOption);
+    public DoubleValidator(String name, double def, OptionValue.MetaData metaData) {
+      super(name, Kind.DOUBLE, OptionValue.createDouble(OptionType.SYSTEM, name, def), metaData);
     }
 
     public OptionValue loadConfigDefault(DrillConfig bootConfig, String name, String configPath){
@@ -239,13 +239,13 @@ public class TypeValidators {
     private OptionValue defaultValue;
 
     public TypeValidator(final String name, final Kind kind, final OptionValue defValue) {
-      this(name, kind, defValue, false);
+      this(name, kind, defValue, OptionValue.MetaData.DEFAULT);
     }
 
 
 
-    public TypeValidator(final String name, final Kind kind, final OptionValue defValue, final boolean isAdminOption) {
-      super(name, isAdminOption);
+    public TypeValidator(final String name, final Kind kind, final OptionValue defValue, OptionValue.MetaData metaData) {
+      super(name, metaData);
       checkArgument(defValue.type == OptionType.SYSTEM, "Default value must be SYSTEM type.");
       this.kind = kind;
       this.defaultValue = defValue;

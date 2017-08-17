@@ -20,6 +20,7 @@ package org.apache.drill.exec;
 import org.apache.drill.exec.physical.impl.common.HashTable;
 import org.apache.drill.exec.rpc.user.InboundImpersonationManager;
 import org.apache.drill.exec.server.options.OptionValidator;
+import org.apache.drill.exec.server.options.OptionValue;
 import org.apache.drill.exec.server.options.TypeValidators.BooleanValidator;
 import org.apache.drill.exec.server.options.TypeValidators.DoubleValidator;
 import org.apache.drill.exec.server.options.TypeValidators.EnumeratedStringValidator;
@@ -385,13 +386,13 @@ public interface ExecConstants {
    * such as changing system options.
    */
   String ADMIN_USERS_KEY = "security.admin.users";
-  StringValidator ADMIN_USERS_VALIDATOR = new StringValidator(ADMIN_USERS_KEY, ImpersonationUtil.getProcessUserName(), true);
+  StringValidator ADMIN_USERS_VALIDATOR = new StringValidator(ADMIN_USERS_KEY, ImpersonationUtil.getProcessUserName(), new OptionValue.MetaData(true));
 
   /**
    * Option whose value is a comma separated list of admin usergroups.
    */
   String ADMIN_USER_GROUPS_KEY = "security.admin.user_groups";
-  StringValidator ADMIN_USER_GROUPS_VALIDATOR = new StringValidator(ADMIN_USER_GROUPS_KEY, "", true);
+  StringValidator ADMIN_USER_GROUPS_VALIDATOR = new StringValidator(ADMIN_USER_GROUPS_KEY, "", new OptionValue.MetaData(true));
   /**
    * Option whose value is a string representing list of inbound impersonation policies.
    *
@@ -426,7 +427,7 @@ public interface ExecConstants {
       new PositiveLongValidator(CREATE_PREPARE_STATEMENT_TIMEOUT_MILLIS, Integer.MAX_VALUE, 10000);
 
   String DYNAMIC_UDF_SUPPORT_ENABLED = "exec.udf.enable_dynamic_support";
-  BooleanValidator DYNAMIC_UDF_SUPPORT_ENABLED_VALIDATOR = new BooleanValidator(DYNAMIC_UDF_SUPPORT_ENABLED, true, true);
+  BooleanValidator DYNAMIC_UDF_SUPPORT_ENABLED_VALIDATOR = new BooleanValidator(DYNAMIC_UDF_SUPPORT_ENABLED, true, new OptionValue.MetaData(true));
 
   /**
    * Option to save query profiles. If false, no query profile will be saved
@@ -434,7 +435,7 @@ public interface ExecConstants {
    */
   String ENABLE_QUERY_PROFILE_OPTION = "exec.query_profile.save";
   BooleanValidator ENABLE_QUERY_PROFILE_VALIDATOR = new BooleanValidator(
-      ENABLE_QUERY_PROFILE_OPTION, true, false);
+      ENABLE_QUERY_PROFILE_OPTION, true, OptionValue.MetaData.DEFAULT);
 
   /**
    * Profiles are normally written after the last client message to reduce latency.
@@ -444,7 +445,7 @@ public interface ExecConstants {
    */
   String QUERY_PROFILE_DEBUG_OPTION = "exec.query_profile.debug_mode";
   BooleanValidator QUERY_PROFILE_DEBUG_VALIDATOR = new BooleanValidator(
-      QUERY_PROFILE_DEBUG_OPTION, false, false);
+      QUERY_PROFILE_DEBUG_OPTION, false, OptionValue.MetaData.DEFAULT);
 
   String USE_DYNAMIC_UDFS_KEY = "exec.udf.use_dynamic";
   BooleanValidator USE_DYNAMIC_UDFS = new BooleanValidator(USE_DYNAMIC_UDFS_KEY, true);

@@ -206,4 +206,37 @@ public class OptionValue implements Comparable<OptionValue> {
     return "OptionValue [ type=" + type + ", name=" + name + ", value=" + getValue() + " ]";
   }
 
+  public static class MetaData {
+    public static final MetaData DEFAULT = new MetaData(false);
+
+    private boolean adminOption;
+
+    public MetaData(boolean adminOption) {
+      this.adminOption = adminOption;
+    }
+
+    public boolean isAdminOption() {
+      return adminOption;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+
+      if (o == null || getClass() != o.getClass()){
+        return false;
+      }
+
+      MetaData metaData = (MetaData) o;
+
+      return adminOption == metaData.adminOption;
+    }
+
+    @Override
+    public int hashCode() {
+      return (adminOption ? 1 : 0);
+    }
+  }
 }

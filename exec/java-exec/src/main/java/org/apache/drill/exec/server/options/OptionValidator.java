@@ -28,16 +28,16 @@ public abstract class OptionValidator {
   // Stored here as well as in the option static class to allow insertion of option optionName into
   // the error messages produced by the validator
   private final String optionName;
-  private final boolean isAdminOption;
+  private final OptionValue.MetaData metaData;
 
   /** By default, if admin option value is not specified, it would be set to false.*/
   public OptionValidator(String optionName) {
-    this(optionName, false);
+    this(optionName, OptionValue.MetaData.DEFAULT);
   }
 
-  public OptionValidator(String optionName, boolean isAdminOption) {
+  public OptionValidator(String optionName, OptionValue.MetaData metaData) {
     this.optionName = optionName;
-    this.isAdminOption = isAdminOption;
+    this.metaData = metaData;
   }
 
   /**
@@ -47,6 +47,14 @@ public abstract class OptionValidator {
    */
   public String getOptionName() {
     return optionName;
+  }
+
+  /**
+   * Gets the metadata of this validator
+   * @return
+   */
+  public OptionValue.MetaData getMetaData() {
+    return metaData;
   }
 
   /**
@@ -81,7 +89,7 @@ public abstract class OptionValidator {
    * @return true is option is system-level property that can be only specified by admin (not user).
    */
   public boolean isAdminOption() {
-    return isAdminOption;
+    return metaData.isAdminOption();
   }
 
   /**

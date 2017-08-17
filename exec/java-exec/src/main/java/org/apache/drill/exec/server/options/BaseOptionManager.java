@@ -22,9 +22,7 @@ import org.apache.drill.exec.server.options.TypeValidators.DoubleValidator;
 import org.apache.drill.exec.server.options.TypeValidators.LongValidator;
 import org.apache.drill.exec.server.options.TypeValidators.StringValidator;
 
-public abstract class BaseOptionManager implements OptionSet {
-//  private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(BaseOptionManager.class);
-
+public abstract class BaseOptionManager implements OptionManager {
   /**
    * Gets the current option value given a validator.
    *

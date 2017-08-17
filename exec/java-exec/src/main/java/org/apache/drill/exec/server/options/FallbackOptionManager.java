@@ -31,7 +31,7 @@ import org.apache.drill.exec.server.options.OptionValue.OptionType;
  * {@link FragmentOptionManager} and {@link SessionOptionManager} use {@link SystemOptionManager} as the fall back
  * manager. {@link QueryOptionManager} uses {@link SessionOptionManager} as the fall back manager.
  */
-public abstract class FallbackOptionManager extends BaseOptionManager implements OptionManager {
+public abstract class FallbackOptionManager extends BaseOptionManager {
 //  private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(FallbackOptionManager.class);
 
   protected final OptionManager fallback;

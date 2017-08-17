@@ -19,6 +19,7 @@ package org.apache.drill.test;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,7 @@ import org.apache.drill.exec.physical.base.PhysicalOperator;
 import org.apache.drill.exec.record.BatchSchema;
 import org.apache.drill.exec.record.VectorContainer;
 import org.apache.drill.exec.server.options.BaseOptionManager;
+import org.apache.drill.exec.server.options.OptionList;
 import org.apache.drill.exec.server.options.OptionSet;
 import org.apache.drill.exec.server.options.OptionValue;
 import org.apache.drill.exec.server.options.OptionValue.OptionType;
@@ -144,6 +146,31 @@ public class OperatorFixture extends BaseFixture implements AutoCloseable {
     @Override
     public OptionValue getOption(String name) {
       return values.get(name);
+    }
+
+    @Override
+    public Iterator<OptionValue> iterator() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setOption(OptionValue value) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteOption(String name, OptionType type) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteAllOptions(OptionType type) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public OptionList getOptionList() {
+      throw new UnsupportedOperationException();
     }
   }
 
