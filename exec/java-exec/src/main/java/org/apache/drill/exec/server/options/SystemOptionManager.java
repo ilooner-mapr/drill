@@ -86,7 +86,7 @@ import com.google.common.collect.Sets;
  *
  *
  */
-public class SystemOptionManager extends BaseOptionManager implements OptionManager, AutoCloseable {
+public class SystemOptionManager extends BaseOptionManager implements AutoCloseable {
   private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(SystemOptionManager.class);
 
   private static CaseInsensitiveMap<OptionValidator> VALIDATORS;
