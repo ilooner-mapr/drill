@@ -87,7 +87,7 @@ public class InboundImpersonationManager {
   public static class InboundImpersonationPolicyValidator extends StringValidator {
 
     public InboundImpersonationPolicyValidator(String name, String def) {
-      super(name, def, new OptionValue.MetaData(true));
+      super(name, def, new OptionValue.MetaData(true, false));
     }
 
     @Override

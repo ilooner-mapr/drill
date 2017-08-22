@@ -54,4 +54,29 @@ public abstract class BaseOptionManager implements OptionManager {
   public String getOption(StringValidator validator) {
     return getOptionSafe(validator).string_val;
   }
+
+  protected abstract OptionValidator getOptionValidator(String name);
+
+  @Override
+  public OptionList getInternalOptionList() {
+    return getOptionList(true);
+  }
+
+  @Override
+  public OptionList getExternalOptionList() {
+    return getOptionList(false);
+  }
+
+  private OptionList getOptionList(boolean internal)
+  {
+    OptionList optionList = new OptionList();
+
+    for (OptionValue value: getOptionList()) {
+      if (getOptionValidator(value.getName()).getMetaData().isInternal() == internal) {
+        optionList.add(value);
+      }
+    }
+
+    return optionList;
+  }
 }

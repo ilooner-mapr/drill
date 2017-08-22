@@ -386,13 +386,13 @@ public interface ExecConstants {
    * such as changing system options.
    */
   String ADMIN_USERS_KEY = "security.admin.users";
-  StringValidator ADMIN_USERS_VALIDATOR = new StringValidator(ADMIN_USERS_KEY, ImpersonationUtil.getProcessUserName(), new OptionValue.MetaData(true));
+  StringValidator ADMIN_USERS_VALIDATOR = new StringValidator(ADMIN_USERS_KEY, ImpersonationUtil.getProcessUserName(), new OptionValue.MetaData(true, false));
 
   /**
    * Option whose value is a comma separated list of admin usergroups.
    */
   String ADMIN_USER_GROUPS_KEY = "security.admin.user_groups";
-  StringValidator ADMIN_USER_GROUPS_VALIDATOR = new StringValidator(ADMIN_USER_GROUPS_KEY, "", new OptionValue.MetaData(true));
+  StringValidator ADMIN_USER_GROUPS_VALIDATOR = new StringValidator(ADMIN_USER_GROUPS_KEY, "", new OptionValue.MetaData(true, false));
   /**
    * Option whose value is a string representing list of inbound impersonation policies.
    *
@@ -427,7 +427,7 @@ public interface ExecConstants {
       new PositiveLongValidator(CREATE_PREPARE_STATEMENT_TIMEOUT_MILLIS, Integer.MAX_VALUE, 10000);
 
   String DYNAMIC_UDF_SUPPORT_ENABLED = "exec.udf.enable_dynamic_support";
-  BooleanValidator DYNAMIC_UDF_SUPPORT_ENABLED_VALIDATOR = new BooleanValidator(DYNAMIC_UDF_SUPPORT_ENABLED, true, new OptionValue.MetaData(true));
+  BooleanValidator DYNAMIC_UDF_SUPPORT_ENABLED_VALIDATOR = new BooleanValidator(DYNAMIC_UDF_SUPPORT_ENABLED, true, new OptionValue.MetaData(true, false));
 
   /**
    * Option to save query profiles. If false, no query profile will be saved

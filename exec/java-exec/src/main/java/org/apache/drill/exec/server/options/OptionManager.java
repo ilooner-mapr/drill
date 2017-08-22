@@ -62,4 +62,8 @@ public interface OptionManager extends OptionSet, Iterable<OptionValue> {
    * @return the list of options
    */
   OptionList getOptionList();
+
+  OptionList getInternalOptionList();
+
+  OptionList getExternalOptionList();
 }

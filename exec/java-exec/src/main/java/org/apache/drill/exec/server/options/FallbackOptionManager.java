@@ -137,6 +137,11 @@ public abstract class FallbackOptionManager extends BaseOptionManager {
   }
 
   @Override
+  protected OptionValidator getOptionValidator(String name) {
+    return SystemOptionManager.getValidator(name);
+  }
+
+  @Override
   public OptionList getOptionList() {
     final OptionList list = new OptionList();
     for (final OptionValue value : getLocalOptions()) {

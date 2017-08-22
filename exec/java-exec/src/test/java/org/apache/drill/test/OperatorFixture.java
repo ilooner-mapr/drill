@@ -44,6 +44,7 @@ import org.apache.drill.exec.record.VectorContainer;
 import org.apache.drill.exec.server.options.BaseOptionManager;
 import org.apache.drill.exec.server.options.OptionList;
 import org.apache.drill.exec.server.options.OptionSet;
+import org.apache.drill.exec.server.options.OptionValidator;
 import org.apache.drill.exec.server.options.OptionValue;
 import org.apache.drill.exec.server.options.OptionValue.OptionType;
 import org.apache.drill.exec.testing.ExecutionControls;
@@ -52,7 +53,6 @@ import org.apache.drill.test.rowSet.HyperRowSetImpl;
 import org.apache.drill.test.rowSet.IndirectRowSet;
 import org.apache.drill.test.rowSet.RowSet;
 import org.apache.drill.test.rowSet.RowSet.ExtendableRowSet;
-import org.apache.drill.test.rowSet.RowSet.SingleRowSet;
 import org.apache.drill.test.rowSet.RowSetBuilder;
 
 /**
@@ -90,13 +90,13 @@ public class OperatorFixture extends BaseFixture implements AutoCloseable {
   public static class OperatorFixtureBuilder
   {
     ConfigBuilder configBuilder = new ConfigBuilder();
-    TestOptionSet options = new TestOptionSet();
+    TestOptionManager options = new TestOptionManager();
 
     public ConfigBuilder configBuilder() {
       return configBuilder;
     }
 
-    public TestOptionSet options() {
+    public TestOptionManager options() {
       return options;
     }
 
@@ -111,11 +111,11 @@ public class OperatorFixture extends BaseFixture implements AutoCloseable {
    * system and session option read interface.
    */
 
-  public static class TestOptionSet extends BaseOptionManager {
+  public static class TestOptionManager extends BaseOptionManager {
 
     private Map<String,OptionValue> values = new HashMap<>();
 
-    public TestOptionSet() {
+    public TestOptionManager() {
       // Crashes in FunctionImplementationRegistry if not set
       set(ExecConstants.CAST_TO_NULLABLE_NUMERIC, false);
       // Crashes in the Dynamic UDF code if not disabled
@@ -170,6 +170,11 @@ public class OperatorFixture extends BaseFixture implements AutoCloseable {
 
     @Override
     public OptionList getOptionList() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    protected OptionValidator getOptionValidator(String name) {
       throw new UnsupportedOperationException();
     }
   }
@@ -296,7 +301,7 @@ public class OperatorFixture extends BaseFixture implements AutoCloseable {
     }
   }
 
-  private final TestOptionSet options;
+  private final TestOptionManager options;
   private final TestCodeGenContext context;
   private final OperatorStatReceiver stats;
 
@@ -308,7 +313,7 @@ public class OperatorFixture extends BaseFixture implements AutoCloseable {
     stats = new MockStats();
    }
 
-  public TestOptionSet options() { return options; }
+  public TestOptionManager options() { return options; }
 
 
   public FragmentExecContext codeGenContext() { return context; }

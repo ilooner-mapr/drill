@@ -207,16 +207,22 @@ public class OptionValue implements Comparable<OptionValue> {
   }
 
   public static class MetaData {
-    public static final MetaData DEFAULT = new MetaData(false);
+    public static final MetaData DEFAULT = new MetaData(false, false);
 
     private boolean adminOption;
+    private boolean internal;
 
-    public MetaData(boolean adminOption) {
+    public MetaData(boolean adminOption, boolean internal) {
       this.adminOption = adminOption;
+      this.internal = internal;
     }
 
     public boolean isAdminOption() {
       return adminOption;
+    }
+
+    public boolean isInternal() {
+      return internal;
     }
 
     @Override

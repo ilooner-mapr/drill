@@ -386,6 +386,11 @@ public class SystemOptionManager extends BaseOptionManager implements AutoClosea
   }
 
   @Override
+  protected OptionValidator getOptionValidator(String name) {
+    return getValidator(name);
+  }
+
+  @Override
   public OptionList getOptionList() {
     return (OptionList) IteratorUtils.toList(iterator());
   }
