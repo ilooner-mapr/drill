@@ -50,7 +50,7 @@ public class OptionIterator implements Iterator<Object> {
       optionList = configOptions.iterator();
       break;
     case SYS_SESS:
-      optionList = fragmentOptions.iterator();
+      optionList = fragmentOptions.getExternalOptionList().iterator();
       break;
     default:
       optionList = Iterators.concat(configOptions.iterator(), fragmentOptions.iterator());
