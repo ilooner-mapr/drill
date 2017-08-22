@@ -35,6 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.drill.exec.server.options.OptionList;
+import org.apache.drill.exec.server.options.OptionManager;
 import org.apache.drill.exec.server.options.OptionValue;
 import org.apache.drill.exec.server.options.OptionValue.Kind;
 import org.apache.drill.exec.server.rest.DrillRestServer.UserAuthEnabled;
@@ -68,24 +70,48 @@ public class StatusResources {
     return ViewableWithPermissions.create(authEnabled.get(), "/rest/status.ftl", sc, getStatusJSON());
   }
 
+  private List<OptionWrapper> getSystemOptionsJSONHelper(boolean internal)
+  {
+    List<OptionWrapper> options = new LinkedList<>();
+    OptionManager optionManager = work.getContext().getOptionManager();
+    OptionList optionList = internal ? optionManager.getInternalOptionList(): optionManager.getExternalOptionList();
+
+    for (OptionValue option : optionList) {
+      options.add(new OptionWrapper(option.name, option.getValue(), option.type, option.kind));
+    }
+
+    return options;
+  }
+
   @GET
   @Path("/options.json")
   @RolesAllowed(DrillUserPrincipal.AUTHENTICATED_ROLE)
   @Produces(MediaType.APPLICATION_JSON)
-  public List<OptionWrapper> getSystemOptionsJSON() {
-    List<OptionWrapper> options = new LinkedList<>();
-    for (OptionValue option : work.getContext().getOptionManager()) {
-      options.add(new OptionWrapper(option.name, option.getValue(), option.type, option.kind));
-    }
-    return options;
+  public List<OptionWrapper> getSystemExternalOptionsJSON() {
+    return getSystemOptionsJSONHelper(false);
+  }
+
+  @GET
+  @Path("/internal-options.json")
+  @RolesAllowed(DrillUserPrincipal.AUTHENTICATED_ROLE)
+  @Produces(MediaType.APPLICATION_JSON)
+  public List<OptionWrapper> getSystemInternalOptionsJSON() {
+    return getSystemOptionsJSONHelper(true);
+  }
+
+  private Viewable getSystemOptionsHelper(boolean internal) {
+    return ViewableWithPermissions.create(authEnabled.get(),
+      "/rest/options.ftl",
+      sc,
+      getSystemOptionsJSONHelper(internal));
   }
 
   @GET
   @Path("/options")
   @RolesAllowed(DrillUserPrincipal.AUTHENTICATED_ROLE)
   @Produces(MediaType.TEXT_HTML)
-  public Viewable getSystemOptions() {
-    return ViewableWithPermissions.create(authEnabled.get(), "/rest/options.ftl", sc, getSystemOptionsJSON());
+  public Viewable getSystemExternalOptions() {
+    return getSystemOptionsHelper(false);
   }
 
   @POST
@@ -93,7 +119,8 @@ public class StatusResources {
   @RolesAllowed(DrillUserPrincipal.ADMIN_ROLE)
   @Consumes("application/x-www-form-urlencoded")
   @Produces(MediaType.TEXT_HTML)
-  public Viewable updateSystemOption(@FormParam("name") String name, @FormParam("value") String value,
+  public Viewable updateSystemOption(@FormParam("name") String name,
+                                   @FormParam("value") String value,
                                    @FormParam("kind") String kind) {
     try {
       work.getContext()
@@ -106,7 +133,7 @@ public class StatusResources {
     } catch (Exception e) {
       logger.debug("Could not update.", e);
     }
-    return getSystemOptions();
+    return getSystemExternalOptions();
   }
 
   @XmlRootElement
