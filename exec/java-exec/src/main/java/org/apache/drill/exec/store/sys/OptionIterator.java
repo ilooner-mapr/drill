@@ -35,7 +35,7 @@ public class OptionIterator implements Iterator<Object> {
 //  private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(OptionIterator.class);
 
   enum Mode {
-    BOOT, SYS_SESS, BOTH
+    BOOT, SYS_SESS_EXTERNAL, SYS_SESS_INTERNAL, BOTH
   };
 
   private final OptionManager fragmentOptions;
@@ -49,8 +49,11 @@ public class OptionIterator implements Iterator<Object> {
     case BOOT:
       optionList = configOptions.iterator();
       break;
-    case SYS_SESS:
+    case SYS_SESS_EXTERNAL:
       optionList = fragmentOptions.getExternalOptionList().iterator();
+      break;
+    case SYS_SESS_INTERNAL:
+      optionList = fragmentOptions.getInternalOptionList().iterator();
       break;
     default:
       optionList = Iterators.concat(configOptions.iterator(), fragmentOptions.iterator());

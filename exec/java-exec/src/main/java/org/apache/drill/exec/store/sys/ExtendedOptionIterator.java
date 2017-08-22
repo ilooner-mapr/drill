@@ -43,10 +43,15 @@ public class ExtendedOptionIterator implements Iterator<Object> {
   private final OptionManager fragmentOptions;
   private final Iterator<OptionValue> mergedOptions;
 
-  public ExtendedOptionIterator(FragmentContext context) {
+  public ExtendedOptionIterator(FragmentContext context, boolean internal) {
     fragmentOptions = context.getOptions();
     final Iterator<OptionValue> optionList;
-    mergedOptions = sortOptions(fragmentOptions.getExternalOptionList().iterator());
+
+    if (!internal) {
+      mergedOptions = sortOptions(fragmentOptions.getExternalOptionList().iterator());
+    } else {
+      mergedOptions = sortOptions(fragmentOptions.getInternalOptionList().iterator());
+    }
   }
   /*
     Sort options according to name and the type to remove the redundant rows
