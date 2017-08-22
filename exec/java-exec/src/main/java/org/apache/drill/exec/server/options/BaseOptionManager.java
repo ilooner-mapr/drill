@@ -22,6 +22,8 @@ import org.apache.drill.exec.server.options.TypeValidators.DoubleValidator;
 import org.apache.drill.exec.server.options.TypeValidators.LongValidator;
 import org.apache.drill.exec.server.options.TypeValidators.StringValidator;
 
+import java.util.Iterator;
+
 public abstract class BaseOptionManager implements OptionManager {
   /**
    * Gets the current option value given a validator.
@@ -59,19 +61,22 @@ public abstract class BaseOptionManager implements OptionManager {
 
   @Override
   public OptionList getInternalOptionList() {
-    return getOptionList(true);
+    return getAllOptionList(true);
   }
 
   @Override
   public OptionList getExternalOptionList() {
-    return getOptionList(false);
+    return getAllOptionList(false);
   }
 
-  private OptionList getOptionList(boolean internal)
+  private OptionList getAllOptionList(boolean internal)
   {
+    Iterator<OptionValue> values = this.iterator();
     OptionList optionList = new OptionList();
 
-    for (OptionValue value: getOptionList()) {
+    while (values.hasNext()) {
+      OptionValue value = values.next();
+
       if (getOptionValidator(value.getName()).getMetaData().isInternal() == internal) {
         optionList.add(value);
       }

@@ -363,7 +363,6 @@ public class SystemOptionManager extends BaseOptionManager implements AutoClosea
 
     // populate the options from the config
     final Map<String, OptionValidator> tmp = new HashMap<>();
-//    System.out.println(bootConfig);
     for (final Map.Entry<String, OptionValidator> entry : VALIDATORSRESULT.entrySet()) {
 
       OptionValidator validator = entry.getValue();

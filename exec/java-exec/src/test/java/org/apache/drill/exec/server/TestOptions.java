@@ -26,8 +26,7 @@ import static org.apache.drill.exec.ExecConstants.ENABLE_VERBOSE_ERRORS_KEY;
 import static org.apache.drill.exec.ExecConstants.SLICE_TARGET;
 import static org.apache.drill.exec.proto.UserBitShared.DrillPBError.ErrorType.VALIDATION;
 
-public class TestOptions extends BaseTestQuery{
-//  static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(TestOptions.class);
+public class TestOptions extends BaseTestQuery {
 
   @Test
   public void testDrillbits() throws Exception{
