@@ -153,7 +153,7 @@ public class TestMetadataProvider extends BaseTestQuery {
     assertEquals(RequestStatus.OK, resp.getStatus());
     List<TableMetadata> tables = resp.getTablesList();
     System.out.println(resp.getTablesList());
-    assertEquals(12, tables.size());
+    assertEquals(14, tables.size());
 
     verifyTable("INFORMATION_SCHEMA", "CATALOGS", tables);
     verifyTable("INFORMATION_SCHEMA", "COLUMNS", tables);
@@ -164,8 +164,11 @@ public class TestMetadataProvider extends BaseTestQuery {
     verifyTable("sys", "drillbits", tables);
     verifyTable("sys", "memory", tables);
     verifyTable("sys", "options", tables);
+    verifyTable("sys", "options2", tables);
     verifyTable("sys", "threads", tables);
     verifyTable("sys", "version", tables);
+    verifyTable("sys", "internal-options", tables);
+    verifyTable("sys", "internal-options2", tables);
   }
 
   @Test
@@ -187,7 +190,7 @@ public class TestMetadataProvider extends BaseTestQuery {
 
     assertEquals(RequestStatus.OK, resp.getStatus());
     List<TableMetadata> tables = resp.getTablesList();
-    assertEquals(12, tables.size());
+    assertEquals(14, tables.size());
 
     verifyTable("INFORMATION_SCHEMA", "CATALOGS", tables);
     verifyTable("INFORMATION_SCHEMA", "COLUMNS", tables);
@@ -198,8 +201,11 @@ public class TestMetadataProvider extends BaseTestQuery {
     verifyTable("sys", "drillbits", tables);
     verifyTable("sys", "memory", tables);
     verifyTable("sys", "options", tables);
+    verifyTable("sys", "options2", tables);
     verifyTable("sys", "threads", tables);
     verifyTable("sys", "version", tables);
+    verifyTable("sys", "internal-options", tables);
+    verifyTable("sys", "internal-options2", tables);
   }
 
   @Test
@@ -212,12 +218,15 @@ public class TestMetadataProvider extends BaseTestQuery {
 
     assertEquals(RequestStatus.OK, resp.getStatus());
     List<TableMetadata> tables = resp.getTablesList();
-    assertEquals(5, tables.size());
+    assertEquals(7, tables.size());
 
     verifyTable("sys", "boot", tables);
     verifyTable("sys", "memory", tables);
     verifyTable("sys", "options", tables);
+    verifyTable("sys", "options2", tables);
     verifyTable("sys", "version", tables);
+    verifyTable("sys", "internal-options", tables);
+    verifyTable("sys", "internal-options2", tables);
   }
 
   @Test
