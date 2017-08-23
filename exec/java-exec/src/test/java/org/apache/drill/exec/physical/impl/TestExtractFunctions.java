@@ -29,6 +29,7 @@ import org.apache.drill.exec.record.RecordBatchLoader;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.NullableBigIntVector;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -104,7 +105,7 @@ public class TestExtractFunctions extends PopUnitTestBase {
   private void testFrom(String fromType, String testDataFile, String columnName,
       long expectedValues[][]) throws Exception {
     try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-         Drillbit bit = new Drillbit(CONFIG, serviceSet);
+         Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
          DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
       // run query.

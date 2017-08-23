@@ -33,6 +33,7 @@ import org.apache.drill.exec.server.Drillbit;
 
 import org.apache.drill.exec.server.RemoteServiceSet;
 
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -62,7 +63,7 @@ public class ConnectTriesPropertyTestClusterBits {
       int drillBitStarted = 0;
       drillbits = new ArrayList<>();
       while(drillBitStarted < drillBitCount){
-        drillbits.add(Drillbit.start(drillConfig, remoteServiceSet));
+        drillbits.add(Drillbit.start(drillConfig, SystemOptionManager.DEFAULT_VALIDATORS, remoteServiceSet));
         ++drillBitStarted;
       }
     } catch (DrillbitStartupException e) {

@@ -55,6 +55,7 @@ import org.apache.drill.exec.rpc.user.UserResultsListener;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.store.StoragePluginRegistry;
 import org.apache.drill.exec.util.TestUtilities;
 import org.apache.drill.exec.util.VectorUtil;
@@ -194,7 +195,7 @@ public class BaseTestQuery extends ExecTest {
 
     bits = new Drillbit[drillbitCount];
     for(int i = 0; i < drillbitCount; i++) {
-      bits[i] = new Drillbit(config, serviceSet, classpathScan);
+      bits[i] = new Drillbit(config, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet, classpathScan);
       bits[i].run();
 
       final StoragePluginRegistry pluginRegistry = bits[i].getContext().getStorage();

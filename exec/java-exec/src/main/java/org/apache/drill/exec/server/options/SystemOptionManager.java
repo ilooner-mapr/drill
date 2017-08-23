@@ -89,8 +89,11 @@ import com.google.common.collect.Sets;
 public class SystemOptionManager extends BaseOptionManager implements AutoCloseable {
   private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(SystemOptionManager.class);
 
-  private static CaseInsensitiveMap<OptionValidator> VALIDATORS;
-  static {
+  public static final String DRILL_EXEC_OPTIONS = "drill.exec.options.";
+  public static final CaseInsensitiveMap<OptionValidator> DEFAULT_VALIDATORS =
+    CaseInsensitiveMap.newImmutableMap(createDefaultValidators());
+
+  public static CaseInsensitiveMap<OptionValidator> createDefaultValidators() {
     final OptionValidator[] validators = new OptionValidator[]{
       PlannerSettings.CONSTANT_FOLDING,
       PlannerSettings.EXCHANGE,
@@ -210,14 +213,18 @@ public class SystemOptionManager extends BaseOptionManager implements AutoClosea
       ExecConstants.PERSISTENT_TABLE_UMASK_VALIDATOR,
       ExecConstants.CPU_LOAD_AVERAGE
     };
-    final Map<String, OptionValidator> tmp = new HashMap<>();
+
+    final CaseInsensitiveMap<OptionValidator> map = CaseInsensitiveMap.newHashMap();
+
     for (final OptionValidator validator : validators) {
-      tmp.put(validator.getOptionName(), validator);
+      map.put(validator.getOptionName(), validator);
     }
+
     if (AssertionUtil.isAssertionsEnabled()) {
-      tmp.put(ExecConstants.DRILLBIT_CONTROL_INJECTIONS, ExecConstants.DRILLBIT_CONTROLS_VALIDATOR);
+      map.put(ExecConstants.DRILLBIT_CONTROL_INJECTIONS, ExecConstants.DRILLBIT_CONTROLS_VALIDATOR);
     }
-    VALIDATORS = CaseInsensitiveMap.newImmutableMap(tmp);
+
+    return map;
   }
 
   private final PersistentStoreConfig<OptionValue> config;
@@ -230,38 +237,24 @@ public class SystemOptionManager extends BaseOptionManager implements AutoClosea
    * NOTE: CRUD operations must use lowercase keys.
    */
   private PersistentStore<OptionValue> options;
+  private CaseInsensitiveMap<OptionValidator> validators;
 
   public SystemOptionManager(LogicalPlanPersistence lpPersistence, final PersistentStoreProvider provider) {
     this.provider = provider;
     this.config = PersistentStoreConfig.newJacksonBuilder(lpPersistence.getMapper(), OptionValue.class)
           .name("sys.options")
           .build();
+    this.validators = DEFAULT_VALIDATORS;
   }
 
-  public SystemOptionManager(LogicalPlanPersistence lpPersistence, final PersistentStoreProvider provider, final DrillConfig bootConfig) {
+  public SystemOptionManager(final LogicalPlanPersistence lpPersistence, final PersistentStoreProvider provider,
+                             final DrillConfig bootConfig, final CaseInsensitiveMap<OptionValidator> validators) {
     this.provider = provider;
     this.config = PersistentStoreConfig.newJacksonBuilder(lpPersistence.getMapper(), OptionValue.class)
           .name("sys.options")
           .build();
     this.bootConfig = bootConfig;
-    populateDefualtValues(VALIDATORS);
-  }
-
-  /**
-   * Gets the {@link OptionValidator} associated with the name.
-   *
-   * @param name name of the option
-   * @return the associated validator
-   * @throws UserException - if the validator is not found
-   */
-  public static OptionValidator getValidator(final String name) {
-    final OptionValidator validator = VALIDATORS.get(name);
-    if (validator == null) {
-      throw UserException.validationError()
-              .message(String.format("The option '%s' does not exist.", name.toLowerCase()))
-              .build(logger);
-    }
-    return validator;
+    this.validators = populateDefualtValues(validators);
   }
 
   /**
@@ -276,7 +269,7 @@ public class SystemOptionManager extends BaseOptionManager implements AutoClosea
     // if necessary, deprecate and replace options from persistent store
     for (final Entry<String, OptionValue> option : Lists.newArrayList(options.getAll())) {
       final String name = option.getKey();
-      final OptionValidator validator = VALIDATORS.get(name);
+      final OptionValidator validator = validators.get(name);
       if (validator == null) {
         // deprecated option, delete.
         options.delete(name);
@@ -292,6 +285,7 @@ public class SystemOptionManager extends BaseOptionManager implements AutoClosea
         }
       }
     }
+
     return this;
   }
 
@@ -299,7 +293,7 @@ public class SystemOptionManager extends BaseOptionManager implements AutoClosea
   public Iterator<OptionValue> iterator() {
     final Map<String, OptionValue> buildList = CaseInsensitiveMap.newHashMap();
     // populate the default options
-    for (final Map.Entry<String, OptionValidator> entry : VALIDATORS.entrySet()) {
+    for (final Map.Entry<String, OptionValidator> entry : validators.entrySet()) {
       buildList.put(entry.getKey(), entry.getValue().getDefault());
     }
     // override if changed
@@ -321,16 +315,15 @@ public class SystemOptionManager extends BaseOptionManager implements AutoClosea
     }
 
     // otherwise, return default set in the validator.
-    final OptionValidator validator = getValidator(name);
+    final OptionValidator validator = getOptionValidator(name);
     return validator.getDefault();
-
   }
 
   @Override
   public void setOption(final OptionValue value) {
     checkArgument(value.type == OptionType.SYSTEM, "OptionType must be SYSTEM.");
     final String name = value.name.toLowerCase();
-    final OptionValidator validator = getValidator(name);
+    final OptionValidator validator = getOptionValidator(name);
 
     validator.validate(value, this); // validate the option
     if (options.get(name) == null && value.equals(validator.getDefault())) {
@@ -343,7 +336,7 @@ public class SystemOptionManager extends BaseOptionManager implements AutoClosea
   public void deleteOption(final String name, OptionType type) {
     checkArgument(type == OptionType.SYSTEM, "OptionType must be SYSTEM.");
 
-    getValidator(name); // ensure option exists
+    getOptionValidator(name); // ensure option exists
     options.delete(name.toLowerCase());
   }
 
@@ -359,34 +352,37 @@ public class SystemOptionManager extends BaseOptionManager implements AutoClosea
     }
   }
 
-  public void populateDefualtValues(Map<String, OptionValidator> VALIDATORSRESULT) {
-
+  public CaseInsensitiveMap<OptionValidator> populateDefualtValues(Map<String, OptionValidator> validators) {
     // populate the options from the config
-    final Map<String, OptionValidator> tmp = new HashMap<>();
-    for (final Map.Entry<String, OptionValidator> entry : VALIDATORSRESULT.entrySet()) {
+    final Map<String, OptionValidator> populatedValidators = new HashMap<>();
+    for (final Map.Entry<String, OptionValidator> entry : validators.entrySet()) {
 
       OptionValidator validator = entry.getValue();
-      final OptionValue.Kind kind = validator.getKind();
       String name = entry.getValue().getOptionName();
-      OptionValue value;
-      String configPath = "drill.exec.options.";
-      String configName = configPath + name;
+
       try {
-        value = validator.loadConfigDefault(bootConfig,name,configPath);
+        OptionValue value = validator.loadConfigDefault(bootConfig, name, DRILL_EXEC_OPTIONS);
         validator.setDefaultValue(value);
-        tmp.put(name, validator);
+        populatedValidators.put(name, validator);
       } catch (ConfigException.Missing e) {
         logger.error(e.getMessage(), e);
         validator.setDefaultValue(validator.getDefault());
-        tmp.put(name, validator);
+        populatedValidators.put(name, validator);
       }
-      VALIDATORS = CaseInsensitiveMap.newImmutableMap(tmp);
     }
+
+    return CaseInsensitiveMap.newImmutableMap(populatedValidators);
   }
 
   @Override
-  protected OptionValidator getOptionValidator(String name) {
-    return getValidator(name);
+  public OptionValidator getOptionValidator(String name) {
+    final OptionValidator validator = validators.get(name);
+    if (validator == null) {
+      throw UserException.validationError()
+        .message(String.format("The option '%s' does not exist.", name.toLowerCase()))
+        .build(logger);
+    }
+    return validator;
   }
 
   @Override

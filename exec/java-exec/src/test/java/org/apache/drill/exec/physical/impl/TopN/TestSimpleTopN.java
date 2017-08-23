@@ -32,6 +32,7 @@ import org.apache.drill.exec.record.RecordBatchLoader;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.BigIntVector;
 import org.junit.Test;
 
@@ -46,9 +47,9 @@ public class TestSimpleTopN extends PopUnitTestBase {
   public void sortOneKeyAscending() throws Throwable{
     RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (Drillbit bit1 = new Drillbit(CONFIG, serviceSet);
-        Drillbit bit2 = new Drillbit(CONFIG, serviceSet);
-        DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
+    try (Drillbit bit1 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
+         Drillbit bit2 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
+         DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
 
       bit1.run();
       bit2.run();

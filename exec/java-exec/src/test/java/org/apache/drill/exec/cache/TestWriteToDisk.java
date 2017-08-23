@@ -38,6 +38,7 @@ import org.apache.drill.exec.record.WritableBatch;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.AllocationHelper;
 import org.apache.drill.exec.vector.IntVector;
 import org.apache.drill.exec.vector.ValueVector;
@@ -63,7 +64,7 @@ public class TestWriteToDisk extends ExecTest {
     final DrillConfig config = DrillConfig.create();
     try (final RemoteServiceSet serviceSet = RemoteServiceSet
         .getLocalServiceSet();
-        final Drillbit bit = new Drillbit(config, serviceSet)) {
+        final Drillbit bit = new Drillbit(config, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet)) {
       bit.run();
       final DrillbitContext context = bit.getContext();
 

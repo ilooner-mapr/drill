@@ -33,6 +33,7 @@ import org.apache.drill.exec.record.VectorWrapper;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.ValueVector;
 import org.junit.Test;
 
@@ -45,8 +46,8 @@ public class TestSimpleFragmentRun extends PopUnitTestBase {
   @Test
   public void runNoExchangeFragment() throws Exception {
     try (final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-        final Drillbit bit = new Drillbit(CONFIG, serviceSet);
-        final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
+         final Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
+         final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
 
     // run query.
     bit.run();
@@ -106,7 +107,7 @@ public class TestSimpleFragmentRun extends PopUnitTestBase {
   @Test
   public void runJSONScanPopFragment() throws Exception {
     try (final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-         final Drillbit bit = new Drillbit(CONFIG, serviceSet);
+         final Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
          final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
       // run query.

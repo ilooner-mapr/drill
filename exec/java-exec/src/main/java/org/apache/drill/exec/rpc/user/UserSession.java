@@ -247,7 +247,7 @@ public class UserSession implements AutoCloseable {
    * @param value option value
    */
   public void setSessionOption(String name, String value) {
-    OptionValue.Kind optionKind = SystemOptionManager.getValidator(name).getKind();
+    OptionValue.Kind optionKind = sessionOptions.getOptionValidator(name).getKind();
     OptionValue optionValue = OptionValue.createOption(optionKind, OptionValue.OptionType.SESSION, name, value);
     sessionOptions.setOption(optionValue);
   }

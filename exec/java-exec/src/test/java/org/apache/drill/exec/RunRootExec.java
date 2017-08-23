@@ -34,6 +34,7 @@ import org.apache.drill.exec.proto.BitControl.PlanFragment;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.ValueVector;
 
 import com.google.common.base.Charsets;
@@ -46,7 +47,7 @@ public class RunRootExec {
   public static void main(String args[]) throws Exception {
     String path = args[0];
     int iterations = Integer.parseInt(args[1]);
-    Drillbit bit = new Drillbit(c, RemoteServiceSet.getLocalServiceSet(), ClassPathScanner.fromPrescan(c));
+    Drillbit bit = new Drillbit(c, SystemOptionManager.DEFAULT_VALIDATORS, RemoteServiceSet.getLocalServiceSet(), ClassPathScanner.fromPrescan(c));
     bit.run();
     DrillbitContext bitContext = bit.getContext();
     PhysicalPlanReader reader = bitContext.getPlanReader();

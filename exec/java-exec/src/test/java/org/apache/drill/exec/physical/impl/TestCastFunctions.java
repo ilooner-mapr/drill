@@ -49,6 +49,7 @@ import org.apache.drill.exec.rpc.user.UserServer;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.BigIntVector;
 import org.apache.drill.exec.vector.Float4Vector;
 import org.apache.drill.exec.vector.Float8Vector;
@@ -354,7 +355,7 @@ public class TestCastFunctions extends PopUnitTestBase{
   @Test
   public void testCastFromNullablCol() throws Throwable {
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-    try(final Drillbit bit = new Drillbit(CONFIG, serviceSet);
+    try(final Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
         final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
       bit.run();
 

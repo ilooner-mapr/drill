@@ -72,6 +72,7 @@ import org.apache.drill.exec.rpc.DrillRpcFuture;
 import org.apache.drill.exec.rpc.RpcException;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.rpc.user.UserResultsListener;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.store.pojo.PojoRecordReader;
 import org.apache.drill.exec.testing.ControlsInjectionUtil;
 import org.apache.drill.exec.testing.Controls;
@@ -119,7 +120,7 @@ public class TestDrillbitResilience extends DrillTest {
     }
 
     try {
-      final Drillbit drillbit = Drillbit.start(zkHelper.getConfig(), remoteServiceSet);
+      final Drillbit drillbit = Drillbit.start(zkHelper.getConfig(), SystemOptionManager.DEFAULT_VALIDATORS, remoteServiceSet);
       drillbits.put(name, drillbit);
     } catch (final DrillbitStartupException e) {
       throw new RuntimeException("Failed to start Drillbit \"" + name + "\"", e);

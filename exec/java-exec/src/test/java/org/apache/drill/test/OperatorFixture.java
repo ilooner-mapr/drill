@@ -174,7 +174,7 @@ public class OperatorFixture extends BaseFixture implements AutoCloseable {
     }
 
     @Override
-    protected OptionValidator getOptionValidator(String name) {
+    public OptionValidator getOptionValidator(String name) {
       throw new UnsupportedOperationException();
     }
   }

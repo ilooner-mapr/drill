@@ -44,6 +44,7 @@ import org.apache.drill.exec.rpc.user.UserServer;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.ValueVector;
 import org.junit.Rule;
 import org.junit.Test;
@@ -110,8 +111,8 @@ public class TestHashJoin extends PopUnitTestBase {
   public void simpleEqualityJoin() throws Throwable {
     // Function checks hash join with single equality condition
     try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-       Drillbit bit = new Drillbit(CONFIG, serviceSet);
-       DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
+         Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
+         DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
       // run query.
       bit.run();
@@ -153,7 +154,7 @@ public class TestHashJoin extends PopUnitTestBase {
 
     // Function tests with hash join with exchanges
     try (final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-      final Drillbit bit = new Drillbit(CONFIG, serviceSet);
+      final Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
       final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
       // run query.
@@ -181,7 +182,7 @@ public class TestHashJoin extends PopUnitTestBase {
 
     // Function tests hash join with multiple join conditions
     try (final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-      final Drillbit bit = new Drillbit(CONFIG, serviceSet);
+      final Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
       final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
       // run query.
@@ -227,7 +228,7 @@ public class TestHashJoin extends PopUnitTestBase {
 
     // Another test for hash join with exchanges
     try (final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-         final Drillbit bit = new Drillbit(CONFIG, serviceSet);
+         final Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
          final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
       // run query.
@@ -253,7 +254,7 @@ public class TestHashJoin extends PopUnitTestBase {
   public void testHashJoinExprInCondition() throws Exception {
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(CONFIG, serviceSet);
+    try (final Drillbit bit1 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
         final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
 
       bit1.run();

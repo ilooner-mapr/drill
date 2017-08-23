@@ -30,6 +30,7 @@ import org.apache.drill.exec.record.VectorWrapper;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.ValueVector;
 import org.junit.Test;
 
@@ -43,7 +44,7 @@ public class TestCastVarCharToBigInt extends PopUnitTestBase {
     @Test
     public void testCastToBigInt() throws Exception {
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.

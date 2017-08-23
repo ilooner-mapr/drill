@@ -47,6 +47,7 @@ import org.apache.drill.exec.proto.UserBitShared.QueryType;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.store.StoragePluginRegistry;
 import org.apache.drill.exec.store.StoragePluginRegistryImpl;
 import org.apache.drill.exec.store.dfs.FileSystemConfig;
@@ -265,7 +266,7 @@ public class ClusterFixture extends BaseFixture implements AutoCloseable {
     Preconditions.checkArgument(builder.bitCount > 0);
     int bitCount = builder.bitCount;
     for (int i = 0; i < bitCount; i++) {
-      Drillbit bit = new Drillbit(config, serviceSet);
+      Drillbit bit = new Drillbit(config, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
       bit.run();
 
       // Bit name and registration.

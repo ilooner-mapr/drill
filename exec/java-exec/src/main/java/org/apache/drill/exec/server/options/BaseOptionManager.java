@@ -57,8 +57,6 @@ public abstract class BaseOptionManager implements OptionManager {
     return getOptionSafe(validator).string_val;
   }
 
-  protected abstract OptionValidator getOptionValidator(String name);
-
   @Override
   public OptionList getInternalOptionList() {
     return getAllOptionList(true);

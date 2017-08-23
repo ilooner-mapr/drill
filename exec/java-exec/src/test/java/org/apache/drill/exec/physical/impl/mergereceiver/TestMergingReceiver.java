@@ -33,6 +33,7 @@ import org.apache.drill.exec.record.VectorWrapper;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.ValueVector;
 import org.junit.Test;
 
@@ -47,9 +48,9 @@ public class TestMergingReceiver extends PopUnitTestBase {
     @SuppressWarnings("resource")
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(CONFIG, serviceSet);
-        final Drillbit bit2 = new Drillbit(CONFIG, serviceSet);
-        final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
+    try (final Drillbit bit1 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
+         final Drillbit bit2 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
+         final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
       bit1.run();
       bit2.run();
       client.connect();
@@ -76,8 +77,8 @@ public class TestMergingReceiver extends PopUnitTestBase {
     @SuppressWarnings("resource")
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(CONFIG, serviceSet);
-        final Drillbit bit2 = new Drillbit(CONFIG, serviceSet);
+    try (final Drillbit bit1 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
+        final Drillbit bit2 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
         final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
 
       bit1.run();
@@ -125,8 +126,8 @@ public class TestMergingReceiver extends PopUnitTestBase {
     @SuppressWarnings("resource")
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(CONFIG, serviceSet);
-        final Drillbit bit2 = new Drillbit(CONFIG, serviceSet);
+    try (final Drillbit bit1 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
+        final Drillbit bit2 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
         final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
 
       bit1.run();

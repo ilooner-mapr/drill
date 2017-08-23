@@ -29,6 +29,7 @@ import org.apache.drill.exec.client.DrillClient;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.junit.Test;
 
 import com.google.common.base.Charsets;
@@ -42,7 +43,7 @@ public class TestSpoolingBuffer extends BaseTestQuery {
     RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
     DrillConfig conf = DrillConfig.create("drill-spool-test-module.conf");
 
-    try(Drillbit bit1 = new Drillbit(conf, serviceSet);
+    try(Drillbit bit1 = new Drillbit(conf, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
         DrillClient client = new DrillClient(conf, serviceSet.getCoordinator());) {
 
       bit1.run();

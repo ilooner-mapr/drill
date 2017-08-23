@@ -34,6 +34,7 @@ import org.apache.drill.exec.rpc.user.UserSession;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.junit.Test;
 
 public class TestExceptionInjection extends BaseTestQuery {
@@ -220,8 +221,8 @@ public class TestExceptionInjection extends BaseTestQuery {
     final Drillbit drillbit1, drillbit2;
     final DrillConfig drillConfig = zkHelper.getConfig();
     try {
-      drillbit1 = Drillbit.start(drillConfig, remoteServiceSet);
-      drillbit2 = Drillbit.start(drillConfig, remoteServiceSet);
+      drillbit1 = Drillbit.start(drillConfig, SystemOptionManager.DEFAULT_VALIDATORS, remoteServiceSet);
+      drillbit2 = Drillbit.start(drillConfig, SystemOptionManager.DEFAULT_VALIDATORS, remoteServiceSet);
     } catch (DrillbitStartupException e) {
       throw new RuntimeException("Failed to start drillbits.", e);
     }

@@ -30,6 +30,7 @@ import org.apache.drill.exec.record.VectorWrapper;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.ValueVector;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -45,7 +46,7 @@ public class TestDateFunctions extends PopUnitTestBase {
 
     public void testCommon(String[] expectedResults, String physicalPlan, String resourceFile) throws Exception {
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.

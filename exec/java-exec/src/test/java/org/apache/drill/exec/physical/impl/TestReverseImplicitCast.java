@@ -35,6 +35,7 @@ import org.apache.drill.exec.rpc.user.UserServer;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.ValueVector;
 import org.junit.Test;
 
@@ -49,7 +50,7 @@ public class TestReverseImplicitCast extends PopUnitTestBase {
 
     // Function checks for casting from Float, Double to Decimal data types
     try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-         Drillbit bit = new Drillbit(CONFIG, serviceSet);
+         Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
          DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
       // run query.

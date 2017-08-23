@@ -56,6 +56,8 @@ public interface OptionManager extends OptionSet, Iterable<OptionValue> {
    */
   void deleteAllOptions(OptionType type);
 
+  OptionValidator getOptionValidator(String name);
+
   /**
    * Gets the list of options managed this manager.
    *

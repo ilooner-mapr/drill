@@ -36,6 +36,7 @@ import org.apache.drill.exec.rpc.user.UserSession;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.util.Pointer;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -154,8 +155,8 @@ public class TestPauseInjection extends BaseTestQuery {
     final Drillbit drillbit1, drillbit2;
     final DrillConfig drillConfig = zkHelper.getConfig();
     try {
-      drillbit1 = Drillbit.start(drillConfig, remoteServiceSet);
-      drillbit2 = Drillbit.start(drillConfig, remoteServiceSet);
+      drillbit1 = Drillbit.start(drillConfig, SystemOptionManager.DEFAULT_VALIDATORS, remoteServiceSet);
+      drillbit2 = Drillbit.start(drillConfig, SystemOptionManager.DEFAULT_VALIDATORS, remoteServiceSet);
     } catch (final DrillbitStartupException e) {
       throw new RuntimeException("Failed to start two drillbits.", e);
     }

@@ -31,6 +31,7 @@ import org.apache.drill.exec.record.VectorWrapper;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.ValueVector;
 import org.junit.Test;
 
@@ -47,7 +48,7 @@ public class TestDateTypes extends PopUnitTestBase {
     @Test
     public void testDate() throws Exception {
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.
@@ -81,7 +82,7 @@ public class TestDateTypes extends PopUnitTestBase {
     @Test
     public void testSortDate() throws Exception {
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.
@@ -115,7 +116,7 @@ public class TestDateTypes extends PopUnitTestBase {
     @Test
     public void testTimeStamp() throws Exception {
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.
@@ -149,7 +150,7 @@ public class TestDateTypes extends PopUnitTestBase {
     @Test
     public void testInterval() throws Exception {
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.
@@ -207,7 +208,7 @@ public class TestDateTypes extends PopUnitTestBase {
     @Test
     public void testLiterals() throws Exception {
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.
@@ -246,7 +247,7 @@ public class TestDateTypes extends PopUnitTestBase {
     @Test
     public void testDateAdd() throws Exception {
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.

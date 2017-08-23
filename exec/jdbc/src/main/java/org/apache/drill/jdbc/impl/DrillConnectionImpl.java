@@ -57,6 +57,7 @@ import org.apache.drill.exec.memory.RootAllocatorFactory;
 import org.apache.drill.exec.rpc.RpcException;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.store.StoragePluginRegistry;
 import org.apache.drill.exec.util.TestUtilities;
 import org.apache.drill.jdbc.AlreadyClosedSqlException;
@@ -119,7 +120,7 @@ class DrillConnectionImpl extends AvaticaConnection
           serviceSet = RemoteServiceSet.getLocalServiceSet();
           set = serviceSet;
           try {
-            bit = new Drillbit(dConfig, serviceSet);
+            bit = new Drillbit(dConfig, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
             bit.run();
           } catch (final UserException e) {
             throw new SQLException(

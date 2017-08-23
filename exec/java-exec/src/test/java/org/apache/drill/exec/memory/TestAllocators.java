@@ -47,6 +47,7 @@ import org.apache.drill.exec.record.MaterializedField;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.store.StoragePluginRegistry;
 import org.apache.drill.exec.store.StoragePluginRegistryImpl;
 import org.apache.drill.exec.vector.BitVector;
@@ -179,7 +180,7 @@ public class TestAllocators extends DrillTest {
     final DrillConfig config = DrillConfig.create(TEST_CONFIGURATIONS);
 
     try (final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-        final Drillbit bit = new Drillbit(config, serviceSet)) {
+        final Drillbit bit = new Drillbit(config, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet)) {
       ;
       bit.run();
       final DrillbitContext bitContext = bit.getContext();

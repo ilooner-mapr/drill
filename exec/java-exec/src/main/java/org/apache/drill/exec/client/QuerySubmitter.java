@@ -28,6 +28,7 @@ import org.apache.drill.exec.proto.UserBitShared.QueryType;
 import org.apache.drill.exec.rpc.user.AwaitableUserResultsListener;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.util.VectorUtil;
 
 import com.beust.jcommander.JCommander;
@@ -112,7 +113,7 @@ public class QuerySubmitter {
         serviceSet = RemoteServiceSet.getLocalServiceSet();
         drillbits = new Drillbit[bits];
         for (int i = 0; i < bits; i++) {
-          drillbits[i] = new Drillbit(config, serviceSet);
+          drillbits[i] = new Drillbit(config, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
           drillbits[i].run();
         }
         client = new DrillClient(config, serviceSet.getCoordinator());

@@ -32,6 +32,7 @@ import org.apache.drill.exec.record.VectorWrapper;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.vector.ValueVector;
 import org.junit.Test;
 
@@ -48,7 +49,7 @@ public class TestDecimal extends PopUnitTestBase{
          * Also tests instances where the scale might have to truncated when scale provided < input fraction
          */
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.
@@ -93,7 +94,7 @@ public class TestDecimal extends PopUnitTestBase{
 
         // Function checks for casting from Float, Double to Decimal data types
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.
@@ -138,7 +139,7 @@ public class TestDecimal extends PopUnitTestBase{
 
         // Function checks arithmetic operations on Decimal18
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.
@@ -189,7 +190,7 @@ public class TestDecimal extends PopUnitTestBase{
          * Also checks arithmetic on decimal38sparse
          */
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.
@@ -232,7 +233,7 @@ public class TestDecimal extends PopUnitTestBase{
 
         // Function checks if sort output on complex decimal type works
         try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-             Drillbit bit = new Drillbit(CONFIG, serviceSet);
+             Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
              DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
             // run query.
@@ -281,7 +282,7 @@ public class TestDecimal extends PopUnitTestBase{
   public void testSimpleDecimalMathFunc() throws Exception {
 
     try (RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
-         Drillbit bit = new Drillbit(CONFIG, serviceSet);
+         Drillbit bit = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
          DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator())) {
 
       // run query.

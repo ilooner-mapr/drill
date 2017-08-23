@@ -42,6 +42,7 @@ import org.apache.drill.exec.rpc.user.UserServer.UserClientConnection;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.store.StoragePluginRegistryImpl;
 import org.apache.drill.exec.vector.ValueVector;
 import org.junit.Ignore;
@@ -282,8 +283,8 @@ public class TestMergeJoin extends PopUnitTestBase {
   public void testMergeJoinInnerEmptyBatch() throws Exception {
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(CONFIG, serviceSet);
-        final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
+    try (final Drillbit bit1 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
+         final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
 
       bit1.run();
       client.connect();
@@ -306,7 +307,7 @@ public class TestMergeJoin extends PopUnitTestBase {
   public void testMergeJoinLeftEmptyBatch() throws Exception {
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(CONFIG, serviceSet);
+    try (final Drillbit bit1 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
         final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
 
       bit1.run();
@@ -330,7 +331,7 @@ public class TestMergeJoin extends PopUnitTestBase {
   public void testMergeJoinRightEmptyBatch() throws Exception {
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(CONFIG, serviceSet);
+    try (final Drillbit bit1 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
         final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
 
       bit1.run();
@@ -354,7 +355,7 @@ public class TestMergeJoin extends PopUnitTestBase {
   public void testMergeJoinExprInCondition() throws Exception {
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(CONFIG, serviceSet);
+    try (final Drillbit bit1 = new Drillbit(CONFIG, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
         final DrillClient client = new DrillClient(CONFIG, serviceSet.getCoordinator());) {
 
       bit1.run();

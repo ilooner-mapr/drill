@@ -53,6 +53,7 @@ import org.apache.drill.exec.server.BootStrapContext;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.server.RemoteServiceSet;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 import org.apache.drill.exec.store.StoragePluginRegistry;
 import org.apache.drill.exec.store.StoragePluginRegistryImpl;
 import org.apache.drill.exec.store.sys.store.provider.LocalPersistentStoreProvider;
@@ -131,8 +132,8 @@ public class TestOptiqPlans extends ExecTest {
   public void testFilterPlan() throws Exception {
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(config, serviceSet);
-        final DrillClient client = new DrillClient(config, serviceSet.getCoordinator());) {
+    try (final Drillbit bit1 = new Drillbit(config, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
+         final DrillClient client = new DrillClient(config, serviceSet.getCoordinator());) {
       bit1.run();
       client.connect();
       final List<QueryDataBatch> results = client.runQuery(org.apache.drill.exec.proto.UserBitShared.QueryType.PHYSICAL,
@@ -160,7 +161,7 @@ public class TestOptiqPlans extends ExecTest {
   public void testJoinPlan() throws Exception {
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(config, serviceSet);
+    try (final Drillbit bit1 = new Drillbit(config, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
         final DrillClient client = new DrillClient(config, serviceSet.getCoordinator());) {
       bit1.run();
       client.connect();
@@ -189,7 +190,7 @@ public class TestOptiqPlans extends ExecTest {
   public void testFilterString() throws Exception {
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(config, serviceSet);
+    try (final Drillbit bit1 = new Drillbit(config, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
         final DrillClient client = new DrillClient(config, serviceSet.getCoordinator());) {
       bit1.run();
       client.connect();
@@ -228,7 +229,7 @@ public class TestOptiqPlans extends ExecTest {
   public void testLogicalJsonScan() throws Exception {
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(config, serviceSet);
+    try (final Drillbit bit1 = new Drillbit(config, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
         final DrillClient client = new DrillClient(config, serviceSet.getCoordinator());) {
       bit1.run();
       client.connect();
@@ -267,7 +268,7 @@ public class TestOptiqPlans extends ExecTest {
   public void testOrderVarbinary() throws Exception {
     final RemoteServiceSet serviceSet = RemoteServiceSet.getLocalServiceSet();
 
-    try (final Drillbit bit1 = new Drillbit(config, serviceSet);
+    try (final Drillbit bit1 = new Drillbit(config, SystemOptionManager.DEFAULT_VALIDATORS, serviceSet);
         final DrillClient client = new DrillClient(config, serviceSet.getCoordinator());) {
       bit1.run();
       client.connect();

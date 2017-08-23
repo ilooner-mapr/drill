@@ -108,7 +108,7 @@ public abstract class FallbackOptionManager extends BaseOptionManager {
 
   @Override
   public void setOption(OptionValue value) {
-    final OptionValidator validator = SystemOptionManager.getValidator(value.name);
+    final OptionValidator validator = getOptionValidator(value.name);
 
     validator.validate(value, this); // validate the option
 
@@ -120,7 +120,7 @@ public abstract class FallbackOptionManager extends BaseOptionManager {
 
   @Override
   public void deleteOption(final String name, final OptionType type) {
-    SystemOptionManager.getValidator(name); // ensure the option exists
+    getOptionValidator(name); // ensure the option exists
 
     // fallback if unable to delete locally
     if (!deleteLocalOption(name, type)) {
@@ -137,8 +137,8 @@ public abstract class FallbackOptionManager extends BaseOptionManager {
   }
 
   @Override
-  protected OptionValidator getOptionValidator(String name) {
-    return SystemOptionManager.getValidator(name);
+  public OptionValidator getOptionValidator(String name) {
+    return fallback.getOptionValidator(name);
   }
 
   @Override

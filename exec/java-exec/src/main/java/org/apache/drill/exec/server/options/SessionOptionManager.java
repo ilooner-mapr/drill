@@ -61,7 +61,7 @@ public class SessionOptionManager extends InMemoryOptionManager {
       return false;
     }
     final String name = value.name;
-    final OptionValidator validator = SystemOptionManager.getValidator(name); // if set, validator must exist.
+    final OptionValidator validator = getOptionValidator(name); // if set, validator must exist.
     final boolean shortLived = validator.isShortLived();
     if (shortLived) {
       final int start = session.getQueryCount() + 1; // start from the next query
@@ -83,7 +83,7 @@ public class SessionOptionManager extends InMemoryOptionManager {
       final int start = shortLivedOptions.get(name).getLeft();
       // option is not in effect if queryNumber < start
       if (queryNumber < start) {
-        return SystemOptionManager.getValidator(name).getDefault();
+        return getOptionValidator(name).getDefault();
       // reset if queryNumber <= end
       } else {
         options.remove(name);
