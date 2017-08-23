@@ -24,6 +24,7 @@ import java.util.Properties;
 
 import org.apache.drill.exec.ExecConstants;
 import org.apache.drill.exec.ZookeeperHelper;
+import org.apache.drill.exec.server.options.OptionValidator;
 
 /**
  * Build a Drillbit and client with the options provided. The simplest
@@ -105,6 +106,11 @@ public class FixtureBuilder {
 
   public FixtureBuilder configProperty(String key, Object value) {
     configBuilder.put(key, value.toString());
+    return this;
+  }
+
+  public FixtureBuilder putValidator(String key, OptionValidator validator) {
+    configBuilder.putValidator(key, validator);
     return this;
   }
 

@@ -25,6 +25,9 @@ import org.apache.drill.common.config.DrillConfig;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValueFactory;
+import org.apache.drill.common.map.CaseInsensitiveMap;
+import org.apache.drill.exec.server.options.OptionValidator;
+import org.apache.drill.exec.server.options.SystemOptionManager;
 
 /**
  * Builds a {@link DrillConfig} for use in tests. Use this when a config
@@ -34,6 +37,7 @@ public class ConfigBuilder {
 
   protected String configResource;
   protected Properties configProps;
+  protected CaseInsensitiveMap<OptionValidator> validators = SystemOptionManager.createDefaultValidators();
 
   /**
    * Use the given configuration properties as overrides.
@@ -103,6 +107,15 @@ public class ConfigBuilder {
     }
     configProps.put(key, value.toString());
     return this;
+  }
+
+  public ConfigBuilder putValidator(String key, OptionValidator validator) {
+    validators.put(key, validator);
+    return this;
+  }
+
+  public CaseInsensitiveMap<OptionValidator> getValidators() {
+    return CaseInsensitiveMap.newImmutableMap(validators);
   }
 
   public DrillConfig build() {
