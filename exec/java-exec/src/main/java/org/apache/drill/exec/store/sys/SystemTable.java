@@ -47,14 +47,14 @@ public enum SystemTable {
     }
   },
 
-  INTERNAL_OPTIONS("internal-options", false, OptionValueWrapper.class) {
+  INTERNAL_OPTIONS("internal_options", false, OptionValueWrapper.class) {
     @Override
     public Iterator<Object> getIterator(final FragmentContext context) {
       return new OptionIterator(context, OptionIterator.Mode.SYS_SESS_INTERNAL);
     }
   },
 
-  INTERNAL_OPTIONS2("internal-options2", false, ExtendedOptionIterator.ExtendedOptionValueWrapper.class) {
+  INTERNAL_OPTIONS2("internal_options2", false, ExtendedOptionIterator.ExtendedOptionValueWrapper.class) {
     @Override
     public Iterator<Object> getIterator(final FragmentContext context) {
       return new ExtendedOptionIterator(context, true);

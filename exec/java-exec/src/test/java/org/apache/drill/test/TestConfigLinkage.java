@@ -19,6 +19,8 @@
 package org.apache.drill.test;
 
 import org.apache.drill.exec.ExecConstants;
+import org.apache.drill.exec.server.options.OptionValue;
+import org.apache.drill.exec.server.options.TypeValidators;
 import org.junit.Test;
 import org.apache.drill.common.config.DrillConfig;
 import static org.junit.Assert.assertEquals;
@@ -28,6 +30,26 @@ import static org.junit.Assert.assertEquals;
  */
 /* Tests to assert if the config options are read in the order of session ,system, boot-config */
 public class TestConfigLinkage {
+  public static final String MOCK_PROPERTY = "mock.prop";
+
+  private TypeValidators.StringValidator createMockPropValidator() {
+    return new TypeValidators.StringValidator(MOCK_PROPERTY, "b",
+      new OptionValue.MetaData(false, true));
+  }
+
+  @Test
+  public void testDefaultInternalValue() throws Exception {
+    TypeValidators.StringValidator stringValidator = createMockPropValidator();
+
+    FixtureBuilder builder = ClusterFixture.builder().
+      putValidator(MOCK_PROPERTY, stringValidator);
+
+    try (ClusterFixture cluster = builder.build();
+         ClientFixture client = cluster.clientFixture()) {
+      String mockProp = client.queryBuilder().sql("SELECT string_value FROM sys.internal_options2 where name='" + MOCK_PROPERTY + "'").singletonString();
+      assertEquals(mockProp,"b");
+    }
+  }
 
   /* Test if session option takes precendence */
   @Test

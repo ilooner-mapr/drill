@@ -307,8 +307,6 @@ public class SystemOptionManager extends BaseOptionManager implements AutoClosea
   public OptionValue getOption(final String name) {
     // check local space (persistent store)
     final OptionValue value = options.get(name.toLowerCase());
-    OptionValue val;
-
 
     if (value != null) {
       return value;
