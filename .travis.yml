@@ -18,3 +18,4 @@ language: java
 jdk:
   - openjdk7
 install: MAVEN_OPTS="-Xms1G -Xmx1G" mvn install --batch-mode -DskipTests=true -Dmaven.javadoc.skip=true -Dmaven.source.skip=true
+script: MAVEN_OPTS="-Xms1G -Xmx1G" mvn package -DskipTests=true
